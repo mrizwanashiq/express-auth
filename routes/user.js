@@ -51,6 +51,7 @@ router.post(
 			});
 
 			// ❌ uncomment this code once you set the credentials to send email in environment variables
+
 			// MessageService.sendEmail({
 			// 	message: `your code is ${code.code}`,
 			// 	to: req.body.email,
