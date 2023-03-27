@@ -34,42 +34,30 @@ const CodeService = {
 		}
 	},
 
-	validate: async ({ userId, code, intent, shouldDelete = true }) => {
+	validate: async ({ code, intent, shouldDelete = true }) => {
 		const result = await CodeModel.findOne({
-			user_id: userId,
 			intent,
 			code,
 		});
 
 		if (!result) {
-			return ServiceResponse.failed({
-				code: ErrorCodes.INVALID_VERIFICATION_CODE,
-				status: 404,
-			});
+			throw new Error("Code not found");
 		}
 
 		if (shouldDelete) {
 			// now should delete the after validation
-			await this.deleteCode({ userId, intent, code });
+			await CodeService.deleteCode(result._id);
 		}
 
 		if (new Date().getTime() > result._doc.exp) {
-			return ServiceResponse.failed({
-				code: ErrorCodes.VERIFICATION_CODE_EXPIRED,
-				status: 410,
-			});
+			throw new Error("Code expired");
 		}
 
-		return ServiceResponse.success({ status: 200 });
+		return result;
 	},
 
-	deleteCode: async ({ userId, intent, code }) => {
-		await CodeModel.deleteOne({
-			user_id: payload.userId,
-			intent: payload.intent,
-			code: payload.code,
-		});
-
+	deleteCode: async (_id) => {
+		await CodeModel.deleteOne({ _id });
 		return true;
 	},
 };

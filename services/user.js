@@ -10,6 +10,22 @@ const Service = {
 			throw error;
 		}
 	},
+
+	findByFilter: async (query) => {
+		try {
+			return UserModel.find(query);
+		} catch (error) {
+			throw error;
+		}
+	},
+
+	update: async ({ _id, password }) => {
+		try {
+			return UserModel.findOneAndUpdate({ _id }, { password });
+		} catch (error) {
+			throw error;
+		}
+	},
 };
 
 export default Service;
