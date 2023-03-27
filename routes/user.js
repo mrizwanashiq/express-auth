@@ -59,6 +59,7 @@ router.post(
 			// });
 
 			res.status(201).json({ message: "Code mailed", code: code.code });
+			// ⚠️ This API MUST NOT SEND CODE AS RESPONSE, this is just for testing, and development purpose. Code must be deliver via email, or message
 		} catch (error) {
 			res.status(400).json(error);
 		}
