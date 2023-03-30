@@ -4,34 +4,30 @@ import { CodeVerificationOptions } from "../constants/code-verification-constant
 
 const CodeService = {
 	generate: async ({ user_id, intent }) => {
-		try {
-			const code = generateRandomCodeNumber();
-			const exp =
-				new Date().getTime() + CodeVerificationOptions.EXPIRATION_TIME * 1000;
+		const code = generateRandomCodeNumber();
+		const exp =
+			new Date().getTime() + CodeVerificationOptions.EXPIRATION_TIME * 1000;
 
-			const codeExists = await CodeModel.findOne({
+		const codeExists = await CodeModel.findOne({
+			user_id,
+			intent,
+		});
+
+		if (codeExists) {
+			await codeExists.updateOne({
+				exp,
+				code,
+			});
+		} else {
+			await CodeModel.create({
 				user_id,
 				intent,
+				exp,
+				code,
 			});
-
-			if (codeExists) {
-				await codeExists.updateOne({
-					exp,
-					code,
-				});
-			} else {
-				await CodeModel.create({
-					user_id,
-					intent,
-					exp,
-					code,
-				});
-			}
-
-			return { user_id, intent, code, exp };
-		} catch (error) {
-			throw error;
 		}
+
+		return { user_id, intent, code, exp };
 	},
 
 	validate: async ({ code, intent, shouldDelete = true }) => {
@@ -57,8 +53,7 @@ const CodeService = {
 	},
 
 	deleteCode: async (_id) => {
-		await CodeModel.deleteOne({ _id });
-		return true;
+		return CodeModel.deleteOne({ _id });
 	},
 };
 

@@ -44,8 +44,15 @@ export default {
 
 	forgetPasswordUpdate: {
 		body: Joi.object().keys({
-			code: Joi.number(),
-			password: Joi.string(),
+			code: Joi.number().required(),
+			password: Joi.string().required(),
+		}),
+	},
+
+	updatePassword: {
+		body: Joi.object().keys({
+			old_password: Joi.string().required(),
+			new_password: Joi.string().required(),
 		}),
 	},
 };

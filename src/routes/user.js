@@ -76,7 +76,25 @@ router.post(
 				code: req.body.code,
 				intent: CodeVerificationUnProtectedIntents.FORGET_PASSWORD,
 			});
-			const data = await UserService.update({
+
+			await UserService.update({
+				_id: code.user_id,
+				password: req.body.password,
+			});
+
+			res.status(201).json({ message: "Password Reset" });
+		} catch (error) {
+			res.status(400).send(error);
+		}
+	}
+);
+
+router.post(
+	"/update-password",
+	validate(userValidationSchema.updatePassword),
+	async (req, res) => {
+		try {
+			await UserService.update({
 				_id: code.user_id,
 				password: req.body.password,
 			});
