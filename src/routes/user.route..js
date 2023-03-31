@@ -1,7 +1,7 @@
 import express from "express";
-import UserService from "../services/user.js";
-import CodeService from "../services/code.js";
-import MessageService from "../services/message.js";
+import UserService from "../services/user.service.js";
+import CodeService from "../services/code.service.js";
+import MessageService from "../services/message.service.js";
 import { CodeVerificationUnProtectedIntents } from "../constants/code-verification-constant.js";
 import validate from "../middleware/validation.js";
 import userValidationSchema from "../validations/user.validation.schema.js";
@@ -19,7 +19,7 @@ router.post(
 				intent: CodeVerificationUnProtectedIntents.REGISTRATION,
 			});
 
-			// ❌ uncomment this code once you set the credentials to send email in environment variables
+			// ⚠️ uncomment this code 👇 once you set the credentials to send email in environment variables
 
 			// MessageService.sendEmail({
 			// 	message: `your code is ${code.code}`,
@@ -50,7 +50,7 @@ router.post(
 				intent: CodeVerificationUnProtectedIntents.FORGET_PASSWORD,
 			});
 
-			// ❌ uncomment this code once you set the credentials to send email in environment variables
+			// ⚠️ uncomment this code 👇 once you set the credentials to send email in environment variables
 
 			// MessageService.sendEmail({
 			// 	message: `your code is ${code.code}`,
@@ -59,8 +59,8 @@ router.post(
 			// });
 
 			res.status(201).json({ message: "Code mailed", code: code.code });
-			// ⚠️ This API MUST NOT SEND CODE IN THE RESPONSE, this is just for testing, and development purpose. Code must be deliver via email, or message
-			// but for now the mailing part is commented, that's why I am sending it in the response
+			// ❌ This API MUST NOT SEND CODE IN THE RESPONSE, this is just for testing, and development purpose. Code must be deliver via email, or message
+			// but as the mailing code is commented, that's why I am sending it in the response
 		} catch (error) {
 			res.status(400).json(error);
 		}
