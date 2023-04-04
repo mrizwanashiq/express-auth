@@ -55,4 +55,18 @@ export default {
 			new_password: Joi.string().required(),
 		}),
 	},
+
+	verifyEmail: {
+		body: Joi.object().keys({
+			code: Joi.number().required(),
+		}),
+	},
+
+	updateProfile: {
+		body: Joi.object().keys({
+			name: Joi.string(),
+			email: Joi.string().email(),
+			address: Joi.string(),
+		}),
+	}
 };
