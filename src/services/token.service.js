@@ -1,6 +1,9 @@
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
+import config from "../config/index.js";
 
 export default {
-    createJwtToken: async (jwtPayload) => jwt.sign(jwtPayload, 'secret' ),
-    verifyAndExtractJwtToken: async (jwtToken) => jwt.verify(jwtToken, 'secret' )
-}
+	createJwtToken: async (jwtPayload) =>
+		jwt.sign(jwtPayload, config.env.tokens.jwtSecret),
+	verifyAndExtractJwtToken: async (jwtToken) =>
+		jwt.verify(jwtToken, config.env.tokens.jwtSecret),
+};

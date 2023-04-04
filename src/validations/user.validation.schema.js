@@ -68,5 +68,5 @@ export default {
 			email: Joi.string().email(),
 			address: Joi.string(),
 		}),
-	}
+	},
 };
